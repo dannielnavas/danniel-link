@@ -8,9 +8,8 @@ import config from 'src/config';
   imports: [
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigType<typeof config>) => {
-        const { user, password, dbName } = configService.mongo;
-        // const uri = `mongodb+srv://${user}:${password}@${host}.1kniivd.mongodb.net/?retryWrites=true&w=majority`;
-        const uri = `mongodb+srv://dannielnavas:hWTZhnSTkubqbNCC@cluster0.beupb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+        const { user, password, dbName, host } = configService.mongo;
+        const uri = `mongodb+srv://${user}:${password}@${host}.beupb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
         return {
           uri,
           user,
