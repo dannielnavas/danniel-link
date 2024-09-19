@@ -7,6 +7,11 @@ import { CreateShotLinkDto } from './dtos/app.dto';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get()
+  async getAllLinks() {
+    return await this.appService.getAllLinks();
+  }
+
   @Post()
   createShortLink(@Body() payload: CreateShotLinkDto) {
     return this.appService.create(payload);

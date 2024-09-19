@@ -40,4 +40,8 @@ export class AppService {
     );
     return newLink;
   }
+
+  async getAllLinks() {
+    return await this.shortUrlModel.find();
+  }
 }
