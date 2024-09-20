@@ -16,6 +16,12 @@ export class AppService {
   }
 
   async create(payload: CreateShotLinkDto) {
+    if (!payload.key) {
+      throw new Error('Key is required');
+    }
+    if (payload.key !== process.env.KEY) {
+      throw new Error('Invalid key');
+    }
     const link = await this.shortUrlModel.findOne({
       identifier: payload.identifier,
     });

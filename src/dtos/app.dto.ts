@@ -15,5 +15,9 @@ export class CreateShotLinkDto {
 
   @IsString()
   @IsNotEmpty()
+  readonly key: string;
+
+  @IsString()
+  @IsNotEmpty()
   readonly createdAt: string;
 }
