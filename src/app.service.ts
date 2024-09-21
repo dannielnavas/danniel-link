@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateShotLinkDto } from './dtos/app.dto';
@@ -17,16 +17,16 @@ export class AppService {
 
   async create(payload: CreateShotLinkDto) {
     if (!payload.key) {
-      throw new Error('Key is required');
+      throw new NotFoundException('Key is required');
     }
     if (payload.key !== process.env.KEY) {
-      throw new Error('Invalid key');
+      throw new NotFoundException('Invalid key');
     }
     const link = await this.shortUrlModel.findOne({
       identifier: payload.identifier,
     });
     if (link) {
-      throw new Error('Identifier already exists');
+      throw new NotFoundException('Identifier already exists');
     }
     const newLink = new this.shortUrlModel(payload);
     return newLink.save();
@@ -35,7 +35,7 @@ export class AppService {
   async get(identifier: string) {
     const link = await this.shortUrlModel.findOne({ identifier });
     if (!link) {
-      throw new Error('Link not found');
+      throw new NotFoundException('Link not found');
     }
     // update click count
     link.click += 1;
