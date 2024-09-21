@@ -10,7 +10,6 @@ export class CreateShotLinkDto {
   readonly identifier: string;
 
   @IsNumber()
-  @IsNotEmpty()
   readonly click: number;
 
   @IsString()
@@ -18,6 +17,5 @@ export class CreateShotLinkDto {
   readonly key: string;
 
   @IsString()
-  @IsNotEmpty()
   readonly createdAt: string;
 }
