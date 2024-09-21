@@ -1,5 +1,4 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateShotLinkDto } from './dtos/app.dto';
 
@@ -18,9 +17,8 @@ export class AppController {
   }
 
   @Get(':identifier')
-  async getLink(@Param('identifier') identifier: string, @Res() res: Response) {
+  async getLink(@Param('identifier') identifier: string) {
     const data = this.appService.get(identifier);
-    // redirect to the original url
-    (res as Response).redirect((await data).url.toString());
+    return data;
   }
 }
