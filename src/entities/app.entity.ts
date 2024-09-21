@@ -9,7 +9,7 @@ export class ShortUrl extends Document {
   @Prop({ required: true, unique: true })
   identifier: string;
 
-  @Prop({ required: false, default: 0 })
+  @Prop({ default: 0 })
   click: number;
 
   @Prop({ default: Date.now })
