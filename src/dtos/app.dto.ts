@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateShotLinkDto {
   @IsString()
@@ -9,13 +9,7 @@ export class CreateShotLinkDto {
   @IsNotEmpty()
   readonly identifier: string;
 
-  @IsNumber()
-  readonly click: number;
-
   @IsString()
   @IsNotEmpty()
   readonly key: string;
-
-  @IsString()
-  readonly createdAt: string;
 }
