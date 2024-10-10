@@ -12,6 +12,9 @@ export class ShortUrl extends Document {
   @Prop({ default: 0 })
   click: number;
 
+  @Prop({ type: Map, of: Number, default: {} })
+  clicksByCountry: { [key: string]: number };
+
   @Prop({ default: Date.now })
   createdAt: string;
 }

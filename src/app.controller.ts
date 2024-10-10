@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateShotLinkDto } from './dtos/app.dto';
 
@@ -17,7 +17,11 @@ export class AppController {
   }
 
   @Get(':identifier')
-  async getLink(@Param('identifier') identifier: string) {
+  async getLink(
+    @Param('identifier') identifier: string,
+    @Headers('x-vercel-ip-country') country: string,
+  ) {
+    console.log('Country:', country);
     const data = this.appService.get(identifier);
     return data;
   }
