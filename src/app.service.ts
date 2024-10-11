@@ -33,17 +33,27 @@ export class AppService {
     return newLink.save();
   }
 
-  async get(identifier: string) {
+  async get(identifier: string, country: string) {
     const link = await this.shortUrlModel.findOne({ identifier });
     if (!link) {
       throw new NotFoundException('Link not found');
     }
     // update click count
     link.click += 1;
-    const newLink = this.shortUrlModel.findByIdAndUpdate(
+
+    // update country-specific click count
+    if (!link.clicksByCountry) {
+      link.clicksByCountry = {};
+    }
+    if (!link.clicksByCountry[country]) {
+      link.clicksByCountry[country] = 0;
+    }
+    link.clicksByCountry[country] += 1;
+
+    const newLink = await this.shortUrlModel.findByIdAndUpdate(
       link._id,
       { $set: link },
-      { new: false },
+      { new: true },
     );
     return newLink;
   }

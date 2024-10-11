@@ -21,8 +21,7 @@ export class AppController {
     @Param('identifier') identifier: string,
     @Headers('x-vercel-ip-country') country: string,
   ) {
-    console.log('Country:', country);
-    const data = this.appService.get(identifier);
+    const data = this.appService.get(identifier, country);
     return data;
   }
 }
