@@ -41,16 +41,12 @@ export class AppService {
     // update click count
     link.click += 1;
 
-    // update country-specific click count
-    if (!link.clicksByCountry) {
-      link.clicksByCountry = {};
-    }
-    if (!link.clicksByCountry[country]) {
-      link.clicksByCountry[country] = 0;
-    }
-    link.clicksByCountry[country] += 1;
+    link.clicksByCountry = {
+      ...link.clicksByCountry,
+      [country]: (link.clicksByCountry[country] || 0) + 1,
+    };
 
-    const newLink = await this.shortUrlModel.findByIdAndUpdate(
+    const newLink = this.shortUrlModel.findByIdAndUpdate(
       link._id,
       { $set: link },
       { new: true },
