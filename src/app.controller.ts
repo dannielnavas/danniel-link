@@ -7,6 +7,7 @@ import {
   Post,
   Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { AppService } from './app.service';
 import { CreateShotLinkDto } from './dtos/app.dto';
 
@@ -28,9 +29,17 @@ export class AppController {
   async getLink(
     @Param('identifier') identifier: string,
     @Headers('x-vercel-ip-country') country: string,
-    @Res() res,
+    @Headers('sec-ch-ua-platform') platform: string,
+    @Headers('sec-ch-ua') configBrowser: string,
+    @Res()
+    res: Response,
   ) {
-    const data = await this.appService.get(identifier, country);
+    const data = await this.appService.get(
+      identifier,
+      country,
+      platform,
+      configBrowser,
+    );
     return res.redirect(data.url);
   }
 }

@@ -6,7 +6,9 @@ import { AppService } from './app.service';
 import config from './config';
 import { DatabaseModule } from './database/database.module';
 import { ShortUrl, ShortUrlSchema } from './entities/app.entity';
+import { Country, CountrySchema } from './entities/countries.entity';
 import { environments } from './environments';
+import { CountryService } from './country/country.service';
 
 @Module({
   imports: [
@@ -21,9 +23,13 @@ import { environments } from './environments';
         name: ShortUrl.name,
         schema: ShortUrlSchema,
       },
+      {
+        name: Country.name,
+        schema: CountrySchema,
+      },
     ]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CountryService],
 })
 export class AppModule {}
