@@ -31,7 +31,8 @@
     "mongodb": "^6.9.0",
     "mongoose": "^8.6.2",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "ua-parser-js": "^1.0.39"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

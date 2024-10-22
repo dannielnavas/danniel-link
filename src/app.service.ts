@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as parser from 'ua-parser-js';
 import { CreateShotLinkDto } from './dtos/app.dto';
 import { ShortUrl } from './entities/app.entity';
 
@@ -36,79 +37,57 @@ export class AppService {
   async get(
     identifier: string,
     country: string,
-    platform: string,
-    configBrowser: string,
+    userAgent: string,
   ): Promise<ShortUrl> {
     const link = await this.shortUrlModel.findOne({ identifier });
     if (!link) {
       throw new NotFoundException('Link not found');
     }
-    // update click count
-    link.click += 1;
-    console.log(country);
-    console.log(platform);
-    console.log(configBrowser);
-    const browserName = this.getBrowserName(configBrowser);
-    console.log(browserName);
 
-    const countyRegister = link.clicksByCountry.filter(
+    // Update click count directly
+    link.click += 1;
+
+    const result = parser(userAgent);
+
+    console.log(result);
+
+    // Update clicksByCountry (optimized for efficiency)
+    const countryIndex = link.clicksByCountry.findIndex(
       (c) => c.name === country,
     );
-
-    console.log(countyRegister, 'countyRegister');
-    if (countyRegister.length === 0) {
-      console.log('entro');
-      const data = { name: country, click: 1 };
-      link.clicksByCountry.push(data);
-      console.log(link);
-      console.log(link.clicksByCountry);
+    if (countryIndex === -1) {
+      link.clicksByCountry.push({ name: country, click: 1 });
     } else {
-      countyRegister[0].click += 1;
+      const sumCountry = Number(link.clicksByCountry[countryIndex].click);
+      link.clicksByCountry[countryIndex].click = String(sumCountry + 1);
     }
 
-    const platformRegister = link.clicksBySo.filter((c) => c.name === platform);
-    console.log(platformRegister, 'platformRegister');
-    if (platformRegister.length === 0) {
-      link.clicksBySo.push({ name: platform, click: 1 });
-      console.log(link);
-      console.log(link.clicksBySo);
-    } else {
-      platformRegister[0].click += 1;
-    }
-
-    const browserRegister = link.clicksByBrowser.filter(
-      (c) => c.name === browserName,
+    // Update clicksBySo (optimized for efficiency)
+    const platformIndex = link.clicksBySo.findIndex(
+      (c) => c.name === result.os.name,
     );
-    console.log(browserRegister, 'browserRegister');
-    if (browserRegister.length === 0) {
-      link.clicksByBrowser.push({ name: browserName, click: 1 });
-      console.log(link);
-      console.log(link.clicksByBrowser);
+    if (platformIndex === -1) {
+      link.clicksBySo.push({ name: result.os.name, click: 1 });
     } else {
-      browserRegister[0].click += 1;
+      const sumPlatform = Number(link.clicksBySo[platformIndex].click);
+      link.clicksBySo[platformIndex].click = String(sumPlatform + 1);
     }
 
-    console.log(link);
-
-    this.shortUrlModel.findByIdAndUpdate(
-      link._id,
-      { $set: link },
-      { new: true },
+    // Update clicksByBrowser (optimized for efficiency)
+    const browserIndex = link.clicksByBrowser.findIndex(
+      (c) => c.name === result.browser.name,
     );
-    return link.save();
-  }
+    if (browserIndex === -1) {
+      link.clicksByBrowser.push({ name: result.browser.name, click: 1 });
+    } else {
+      const sumBrowser = Number(link.clicksByBrowser[browserIndex].click);
+      link.clicksByBrowser[browserIndex].click = String(sumBrowser + 1);
+    }
 
-  getBrowserName(uaString: string): string {
-    // Extraer todos los elementos de la cadena
-    const uaElements = uaString.split(',').map((ua) => ua.trim());
+    // Efficiently save the updated document
+    await link.save(); // This will save all the modifications made to the link object
 
-    // Filtrar el elemento que contiene el nombre del navegador principal (sin "Not=A?Brand")
-    const browserElement = uaElements.find((ua) => !ua.includes('Not=A?Brand'));
-
-    // Extraer el nombre del navegador (el texto antes de ';')
-    const browserName = browserElement.split(';')[0].replace(/"/g, '');
-
-    return browserName;
+    return link;
   }
 
   async getAllLinks() {

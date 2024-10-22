@@ -31,15 +31,11 @@ export class AppController {
     @Headers('x-vercel-ip-country') country: string,
     @Headers('sec-ch-ua-platform') platform: string,
     @Headers('sec-ch-ua') configBrowser: string,
+    @Headers('user-agent') userAgent: string,
     @Res()
     res: Response,
   ) {
-    const data = await this.appService.get(
-      identifier,
-      country,
-      platform,
-      configBrowser,
-    );
+    const data = await this.appService.get(identifier, country, userAgent);
     return res.redirect(data.url);
   }
 }
