@@ -55,16 +55,23 @@ export class AppService {
       (c) => c.name === country,
     );
 
+    console.log(countyRegister, 'countyRegister');
     if (countyRegister.length === 0) {
-      link.clicksByCountry.push({ name: country, click: 1 });
+      console.log('entro');
+      const data = { name: country, click: 1 };
+      link.clicksByCountry.push(data);
+      console.log(link);
+      console.log(link.clicksByCountry);
     } else {
       countyRegister[0].click += 1;
     }
 
     const platformRegister = link.clicksBySo.filter((c) => c.name === platform);
-
+    console.log(platformRegister, 'platformRegister');
     if (platformRegister.length === 0) {
       link.clicksBySo.push({ name: platform, click: 1 });
+      console.log(link);
+      console.log(link.clicksBySo);
     } else {
       platformRegister[0].click += 1;
     }
@@ -72,19 +79,23 @@ export class AppService {
     const browserRegister = link.clicksByBrowser.filter(
       (c) => c.name === browserName,
     );
-
+    console.log(browserRegister, 'browserRegister');
     if (browserRegister.length === 0) {
       link.clicksByBrowser.push({ name: browserName, click: 1 });
+      console.log(link);
+      console.log(link.clicksByBrowser);
     } else {
       browserRegister[0].click += 1;
     }
+
+    console.log(link);
 
     this.shortUrlModel.findByIdAndUpdate(
       link._id,
       { $set: link },
       { new: true },
     );
-    return link;
+    return link.save();
   }
 
   getBrowserName(uaString: string): string {
