@@ -1,0 +1,39 @@
+//- 404.pug
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    style.
+      :root {
+      --background-color: #0B0D17; /* Azul espacial profundo */
+      --primary-text-color: #E0E6ED; /* Gris claro con un toque azulado */
+      --secondary-text-color: #A3B1C6; /* Gris azulado más suave */
+      --accent-color: #4CAF50; /* Verde de la insignia de la Flota Estelar */
+      --link-button-color: #FF9800; /* Naranja brillante */
+      --success-color: #76FF03; /* Verde brillante */
+      --warning-color: #FFC107; /* Amarillo cálido */
+      --error-color: #D32F2F; /* Rojo alerta máxima */
+      }
+      .container {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: var(--background-color);
+      }
+      .error-image {
+      -webkit-mask-image: radial-gradient(50% 50% at 50% 50%, #1d1837 0, rgba(29, 24, 55, .76) 49.99%, rgba(29, 24, 55, 0) 100%);
+      mask-image: radial-gradient(50% 50% at 50% 50%, #1d1837 0, rgba(29, 24, 55, .76) 49.99%, rgba(29, 24, 55, 0) 100%);
+      aspect-ratio: 16 / 9;
+      height: auto;
+      width: 550px;
+      object-fit: cover;
+      }
+    title= Danniel Dev | Not Found
+  body.container
+    img.error-image(src='https://res.cloudinary.com/dgnj7t1py/image/upload/v1729649553/vfd7tmkq0kcna22nhzvz.gif' alt='404 Not Found')
+    h1(style='color: var(--primary-text-color); font-size: 2rem;') 404 | Not Found
+    a(href='/')
+      button(style='color: var(--primary-text-color); background-color: var(--link-button-color); padding: 0.5rem 1rem; border: none; border-radius: 0.25rem; cursor: pointer;') Go Home

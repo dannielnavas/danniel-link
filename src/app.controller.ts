@@ -5,6 +5,7 @@ import {
   Headers,
   Param,
   Post,
+  Render,
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
@@ -15,9 +16,16 @@ import { CreateShotLinkDto } from './dtos/app.dto';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  // @Get()
+  // async getAllLinks() {
+  //   return await this.appService.getAllLinks();
+  // }
+
   @Get()
-  async getAllLinks() {
-    return await this.appService.getAllLinks();
+  @Render('index.pug')
+  async getHello() {
+    const dataLinks = await this.appService.getAllLinks();
+    return { title: 'Danniel Dev | links', dataLinks: dataLinks };
   }
 
   @Post()

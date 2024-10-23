@@ -4,11 +4,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import config from './config';
+import { CountryService } from './country/country.service';
 import { DatabaseModule } from './database/database.module';
 import { ShortUrl, ShortUrlSchema } from './entities/app.entity';
 import { Country, CountrySchema } from './entities/countries.entity';
 import { environments } from './environments';
-import { CountryService } from './country/country.service';
 
 @Module({
   imports: [

@@ -1,0 +1,61 @@
+//- index.pug
+doctype html
+html
+  head
+    title= title
+    meta(charset='UTF-8')
+    link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    style.
+      :root {
+      --background-color: #0B0D17; /* Azul espacial profundo */
+      --primary-text-color: #E0E6ED; /* Gris claro con un toque azulado */
+      --secondary-text-color: #A3B1C6; /* Gris azulado más suave */
+      --accent-color: #4CAF50; /* Verde de la insignia de la Flota Estelar */
+      --link-button-color: #FF9800; /* Naranja brillante */
+      --success-color: #76FF03; /* Verde brillante */
+      --warning-color: #FFC107; /* Amarillo cálido */
+      --error-color: #D32F2F; /* Rojo alerta máxima */
+      }
+      .container {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100vh;
+        margin-top: 1rem;
+        color: var(--primary-text-color);
+      }
+      a {
+        color: var(--link-button-color);
+        text-decoration: none;
+      }
+      li {
+        list-style-type: none;
+      }
+      li::before {
+        content: "🖖🏻 ";
+      }
+  body(class='container')
+    h1 Shorten Your URLs in Seconds ⚡🔗
+    p Create a short URL by adding your link below
+
+    //- Formulario para acortar la URL
+    form(method='POST', action='/')
+      label(for='url') URL:
+      input(type='url', id='url', name='url', placeholder='Enter your URL', required)
+
+      label(for='identifier') Identifier:
+      input(type='text', id='identifier', name='identifier', placeholder='Enter identifier', required)
+
+      label(for='key') Key:
+      input(type='text', id='key', name='key', placeholder='Enter your key', required)
+
+      button(type='submit') Shorten URL
+
+    //- Mostrar la lista de enlaces acortados
+    h2 List of shortened URLs
+    ul
+      each item in dataLinks
+        a(href="https://lk.danniel.dev/"+item.identifier)
+          li(class='text-lg text-gray-800')= item.identifier + ' - ' + item.click
