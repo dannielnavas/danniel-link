@@ -1,6 +1,7 @@
 import { registerAs } from '@nestjs/config';
 
 export default registerAs('config', () => ({
+  key: process.env.KEY,
   mongo: {
     dbName: process.env.MONGO_DB_NAME,
     user: process.env.MONGO_USER,
